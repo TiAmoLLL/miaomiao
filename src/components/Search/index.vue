@@ -3,13 +3,13 @@
 				<div class="search_input">
 					<div class="search_input_wrapper">
 						<i class="iconfont icon-sousuo"></i>
-						<input type="text">
+						<input type="text" v-model="message">
 					</div>					
 				</div>
 				<div class="search_result">
 					<h3>电影/电视剧/综艺</h3>
 					<ul>
-						<li>
+						<!-- <li>
 							<div class="img"><img src="/images/movie_1.jpg"></div>
 							<div class="info">
 								<p><span>无名之辈</span><span>8.5</span></p>
@@ -17,14 +17,14 @@
 								<p>剧情,喜剧,犯罪</p>
 								<p>2018-11-16</p>
 							</div>
-						</li>
-						<li>
-							<div class="img"><img src="/images/movie_1.jpg"></div>
+						</li> -->
+						<li v-for="item in moviesList" :key="item.id">
+							<div class="img"><img :src="item.img | setWH('128.180')"></div>
 							<div class="info">
-								<p><span>无名之辈</span><span>8.5</span></p>
-								<p>A Cool Fish</p>
-								<p>剧情,喜剧,犯罪</p>
-								<p>2018-11-16</p>
+								<p><span>{{item.nm}}</span><span>{{item.sc}}</span></p>
+								<p>{{item.star}}</p>
+								<p>{{item.showInfo}}</p>
+								<p>{{item.comingTitle}}}</p>
 							</div>
 						</li>
 					</ul>
@@ -34,7 +34,49 @@
 
 <script>
 export default {
-    name:'search'
+	name:'search',
+	data(){
+		return {
+			message:'',
+			moviesList:[]	
+		}
+	},
+	methods:{
+		cancelRequest(){
+			if(typeof this.source==='function'){
+				this.source('终止请求')
+			}
+		}
+	},
+	watch:{
+		message(newVal){
+			var that = this;
+			this.cancelRequest();
+
+			this.axios.get('/ajax/movieOnInfoList',{
+				cancelToken: new this.axios.CancelToken(function (c) {
+					console.log("1111111");
+					that.source = c;
+				})
+			}).then((res)=>{
+				var msg = res.data.stid;
+				console.log(msg);
+				var movies = res.data.total;
+				console.log(res.data.total);
+				if(msg && movies){
+					this.moviesList = res.data.movieList;
+				}
+			}).catch((err) => {
+                if (this.axios.isCancel(err)) {
+                	//请求如果被取消，这里是返回取消的message
+                    console.log('Rquest canceled', err.message); 
+                } else {
+                    console.log(err);
+				}
+			
+			});
+		}
+	}
 }
 </script>
 

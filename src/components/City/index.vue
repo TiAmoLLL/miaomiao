@@ -1,5 +1,6 @@
 <template>
- <div class="city_body">
+
+<div class="city_body">
 				<div class="city_list">
 					<div class="city_hot">
 						<h2>热门城市</h2>
@@ -86,7 +87,13 @@
 
 <script>
 export default {
-    name: 'City'
+	name: 'City',
+	mounted(){
+		this.axios.get('/ajax/movieOnInfoList').then((res)=>{
+			var mov = res.movieIds;
+			console.log(res);
+		});
+	}
 }
 </script>
 
