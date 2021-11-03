@@ -1,99 +1,78 @@
 <template>
-
 <div class="city_body">
-				<div class="city_list">
-					<div class="city_hot">
-						<h2>热门城市</h2>
-						<ul class="clearfix">
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
-							<li>上海</li>
-							<li>北京</li>
+		<div class="city_list">
+			<div class="city_hot">
+				<h2>热门城市</h2>
+				<ul class="clearfix">
+						<li v-for="item in hotList" :key="item.id">{{item.nm}}</li> 
+				</ul>
+				</div>
+				<div class="city_sort" ref="city_sort">
+					<div v-for="(value,key,index) in cityList" :key="index.id">
+						<h2>{{key}}</h2>
+						<ul>
+							<li v-for="item in value" :key="item.id">{{item.nm}}</li>
 						</ul>
 					</div>
-					<div class="city_sort">
-						<div>
-							<h2>A</h2>
-							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
-							</ul>
-						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>
-						<div>
-							<h2>A</h2>
-							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
-							</ul>
-						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>
-						<div>
-							<h2>A</h2>
-							<ul>
-								<li>阿拉善盟</li>
-								<li>鞍山</li>
-								<li>安庆</li>
-								<li>安阳</li>
-							</ul>
-						</div>
-						<div>
-							<h2>B</h2>
-							<ul>
-								<li>北京</li>
-								<li>保定</li>
-								<li>蚌埠</li>
-								<li>包头</li>
-							</ul>
-						</div>	
-					</div>
+					
+				</div>
 				</div>
 				<div class="city_index">
 					<ul>
-						<li>A</li>
-						<li>B</li>
-						<li>C</li>
-						<li>D</li>
-						<li>E</li>
+						<li v-for="(value,key,index) in cityList" :key="index.index" @touchstart="handleToIndex(index)">{{key}}</li>
 					</ul>
 				</div>
-			</div>
-
+		</div>
 </template>
 
 <script>
 export default {
 	name: 'City',
+	data(){
+		return{
+			hotList:[],
+			cityList:{}
+		}
+	},
 	mounted(){
-		this.axios.get('/ajax/movieOnInfoList').then((res)=>{
+		this.axios.get('/maps.json').then((res)=>{
 			var mov = res.movieIds;
-			console.log(res);
-		});
-	}
+			var data = res.data.letterMap;
+			this.cityList = data;
+			// console.log(this.cityList);
+			this.hotList = this.formatCityList(data);
+			// console.log(this.hotList);
+		});	
+		
+	},
+	methods: {
+			handleToIndex(index){
+				var h2 = this.$refs.city_sort.getElementsByTagName('h2');
+				console.log(h2);
+				console.log(h2[index].offsetTop);
+				this.$refs.city_sort.parentNode.scrollTop=h2[index].offsetTop;
+			 },
+			formatCityList(cities){
+				for(var y=0;y<26;y++){/** 找出热门城市**/
+					var s = String.fromCharCode(65+y);
+					if(cities[s]===undefined){/**没有此字母开头的城市，跳到下一个 */
+						++y;
+					}
+					s = String.fromCharCode(65+y);
+					for(var i = 0;i<cities[s].length;i++){
+						if(cities[s][i].isHot==1){
+							this.hotList.push(cities[s][i])/*将热门城市保存到数组hotList*/
+							// console.log(hotList);
+							// console.log(this.hotList);
+						}
+					 }
+				}
+				
+			},
+			
+			
+		}
+		
 }
 </script>
 

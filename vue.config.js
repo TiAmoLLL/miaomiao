@@ -4,6 +4,10 @@ module.exports={
             '/ajax':{
                 target:'http://m.maoyan.com',
                 changeOrigin:true
+            },
+            'public':{
+                target:'http://localhost:8080',
+                changeOrigin:true
             }
         }
     }
