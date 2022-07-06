@@ -19,7 +19,42 @@
 
 <script>
 export default { 
-    name:'TabBar'
+    name:'TabBar',
+  mounted(){
+    this.$jsonp('https://www.bing.com/HPImageArchive.aspx?format=js&idx=8&n=8&mkt=zh-CN').then((res)=>{
+      var msg = res.images;
+      console.log(msg)
+      if(!msg){
+        this.movieList = res.data.movieList;
+        /*this.$nextTick(()=>{
+          var scroll = new BScroll(this.$refs.movie_body,{
+            tap : true,
+            probeType: 1
+          });
+
+          scroll.on('scroll',(pos)=>{
+            console.log("scroll");
+            if(pos.y>30){
+              this.pullDownMsg='正在更新中';
+            }
+          });
+          scroll.on('touchEnd',()=>{
+            this.axios.get('/ajax/movieOnInfoList').then((res)=>{
+              var msg = res.total;
+              if(!msg){
+                this.pullDownMsg='更新成功';
+                setTimeout(()=>{
+                  this.movieList = res.data.movieList;
+                  this.pullDownMsg = '';
+                },1000)
+
+              }
+            });
+          })
+        });*/
+      }
+    });
+  },
 }
 </script>
 

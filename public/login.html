@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+	<script src="./js/ajax.js"></script>
+    <script>
+
+		/*function sendAjax(type,url,async,data,fu,fu1){
+			//创建ajax对象
+			var xhr = new XMLHttpRequest();
+			if(type==='get' && data!=undefined){
+				url += '?'+data;
+			} 
+			var res;
+			//配置ajax对象
+			xhr.open(type,url,async);
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState===4){
+					//有两种结果 - 请求成功/失败、
+					if(xhr.status>=200 && xhr.status<300){
+						//成功
+						res = xhr.responseText;
+						
+						fu(res);
+					}else{
+						//失败
+						//console.log("请求失败!");
+						fu1();
+					}				
+				}
+			}
+			//post设置请求头
+			if(type === 'post'){
+				xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+				if(data!=undefined){
+					xhr.send(data);
+					return ;
+				}
+			}
+			//发送请求
+			xhr.send();
+			return res;
+		}*/
+		console.log(Object.prototype.toString.call(true));
+		sendAjax({
+			type:'get',
+			url:'https://m.maoyan.com/ajax/comingList',
+			//data:'ci=1&limit=10&token',
+			data:{
+				ci:1,
+				limit:1,
+				token:''
+			},
+			success:function(res){
+				console.log(res);
+			},
+			error:function(){
+				console.log("请求失败!");
+			}
+		})
+		
+		// 	var res = sendAjax('get','http://localhost:8080/maps.json','?letterMap',true,
+	// function(res){
+	// 	console.log(res);
+	// },function () { 
+	// 	console.log("请求失败");
+	//  })
+		// res = JSON.parse(res);
+		// console.log(res)
+		/**function ajax(options){
+			//创建ajax对象
+			var xhr = new XMLHttpRequest();
+
+			//配置ajax对象
+			xhr.open(options.type,options.url);
+			//发送请求
+			xhr.send();
+
+			//监听xhr对象下面的onload事件
+			//当xhr对象接收完响应数据后触发
+			xhr.onreadystatechange = function(){
+				var res = xhr.responseText;
+				res = JSON.parse(res);
+				console.log(res)
+				// for(var i=0;i<res.length;i++){
+				// 	// res[i] // 是每一个小对象
+				// 	// 每一个小对象就应该对应一个option标签
+				// 	var option = document.createElement("option");
+				// 	option.setAttribute("value",res[i].id);
+				// 	option.innerText = res[i].name;
+				// 	province.appendChild(option);
+				// }
+			}
+				
+		}
+		ajax({
+			//请求方式
+			type:'get',
+			//请求地址
+			url:'http://localhost:8080/maps.json'
+		})*/
+	</script>
+</body>
+</html>

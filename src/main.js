@@ -8,7 +8,18 @@ Vue.prototype.axios=axios;
 
 Vue.filter('setWH',(url,arg)=>{
   return url.replace(/w\.h/,arg);
-})
+});
+
+import Scroller from '@/components/Scroller';
+
+//ElementUI
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
+
+Vue.component('Scroller',Scroller);
+
 
 Vue.config.productionTip = false
 
